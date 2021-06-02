@@ -72,7 +72,6 @@ enable=
       import-error,
       import-self,
       ungrouped-imports,
-      wrong-import-position,
       cyclic-import,
       reimported,
 
