@@ -92,8 +92,6 @@ def publish_jsonl(data_path, client, topic):
     # loop over all json elements in the json array and publish to MQTT
     for i in range(len(data)):
 
-        dt = datetime.datetime.now(datetime.timezone.utc)
-
         d = data[["device_id", "x", "y", "z", "sr", "cloud_t"]].iloc[i]
         d["device_id"] = "mx" + d["device_id"]
 
