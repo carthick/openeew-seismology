@@ -3,13 +3,15 @@
 import json
 import glob
 from paho.mqtt.client import Client as MqttClient
-from params import params
 
 import pandas as pd
 import time
 import datetime
 
 import os, sys, inspect
+
+sys.path.insert(0, ".")
+from params import params  # pylint: disable=import-error
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
