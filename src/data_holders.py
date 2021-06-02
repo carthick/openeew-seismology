@@ -1,12 +1,9 @@
 from dataclasses import dataclass
 import pandas as pd
-import json
 import numpy as np
 import datetime
-import sys
 
 from src import travel_time, publish_mqtt
-
 
 @dataclass
 class Traces:
