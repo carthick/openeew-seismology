@@ -30,3 +30,4 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pip install black==21.5b2 pylint==2.8.3
       - run: black --check --verbose .
+      - run: pylint --rcfile=./.pylintrc **/*.py
