@@ -9,7 +9,8 @@ import time
 import datetime
 
 import os, sys, inspect
-sys.path.insert(0, '.')
+
+sys.path.insert(0, ".")
 from params import params
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
