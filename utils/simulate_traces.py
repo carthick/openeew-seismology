@@ -94,7 +94,6 @@ def publish_jsonl(data_path, client, topic):
 
         dt = datetime.datetime.now(datetime.timezone.utc)
         utc_time = dt.replace(tzinfo=datetime.timezone.utc)
-        current_cloud_t = utc_time.timestamp()
 
         d = data[["device_id", "x", "y", "z", "sr", "cloud_t"]].iloc[i]
         d["device_id"] = "mx" + d["device_id"]
