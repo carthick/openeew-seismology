@@ -100,13 +100,6 @@ docker run \
 This repository contains sample data that can be used to feed the seismology algorithms. To simulate this data we have included
 several data simulators. Each of these simulators communicate with an MQTT server. The simulaters accept several options that can be listed by running `python3 <simulator_script>.py -h`. If no arguments are passed, the simulators will assume MQTT is on localhost, port 1883. The simulators by default, will utilize the data contained in the data directory of this repository.
 
-To execute the device simulator:
-
-```
-cd utils
-python3 simulate_devices.py
-```
-
 To execute the traces simulator:
 
 ```
