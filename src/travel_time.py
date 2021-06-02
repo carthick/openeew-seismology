@@ -10,7 +10,6 @@ import math
 import os
 
 import sys
-import time
 
 __author__ = "Vaclav Kuna"
 __copyright__ = ""
