@@ -3,6 +3,7 @@
 import json
 import glob
 from paho.mqtt.client import Client as MqttClient
+from params import params
 
 import pandas as pd
 import time
@@ -13,7 +14,6 @@ import os, sys, inspect
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
-from params import params
 
 
 def run(datapath):
