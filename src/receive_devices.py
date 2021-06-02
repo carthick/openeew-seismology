@@ -1,5 +1,6 @@
 # import modules
 from cloudant.client import Cloudant
+from cloudant.result import Result
 
 import time
 import pandas as pd
