@@ -27,5 +27,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+      - run: pip install -r requirements.txt
       - run: pip install black==21.5b2 pylint==2.8.3
       - run: black --check --verbose .
