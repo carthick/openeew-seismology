@@ -5,6 +5,7 @@ import datetime
 
 from src import travel_time, publish_mqtt
 
+
 @dataclass
 class Traces:
     """This dataclass holds a reference to the Traces DF in memory."""

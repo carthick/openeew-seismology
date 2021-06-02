@@ -5,13 +5,7 @@ This is the main file that runs the OpenEEW code package
 from threading import Thread
 
 from params import params
-from src import (
-    data_holders,
-    receive_traces,
-    receive_devices,
-    detection,
-    event
-)
+from src import data_holders, receive_traces, receive_devices, detection, event
 
 
 def main():
