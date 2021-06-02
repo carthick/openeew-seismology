@@ -1,6 +1,5 @@
 """Simulate devices by sending device data to an MQTT Server"""
 import json
-from time import sleep
 from paho.mqtt.client import Client as MqttClient
 import os
 

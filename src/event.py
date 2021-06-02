@@ -6,7 +6,6 @@ Event module
 import numpy as np
 import scipy
 from inpoly import inpoly2
-import pickle
 import datetime
 import math
 import time

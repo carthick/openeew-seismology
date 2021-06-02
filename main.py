@@ -2,20 +2,10 @@
 This is the main file that runs the OpenEEW code package
 """
 
-# import modules
-import time
-import pickle
 from threading import Thread
 
 from params import params
-from src import (
-    data_holders,
-    receive_traces,
-    receive_devices,
-    detection,
-    event,
-    travel_time,
-)
+from src import data_holders, receive_traces, receive_devices, detection, event
 
 
 def main():

@@ -3,6 +3,7 @@
 import json
 import glob
 from paho.mqtt.client import Client as MqttClient
+from params import params
 
 import pandas as pd
 import time
@@ -13,7 +14,6 @@ import os, sys, inspect
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
-from params import params
 
 
 def run(datapath):
@@ -91,10 +91,6 @@ def publish_jsonl(data_path, client, topic):
 
     # loop over all json elements in the json array and publish to MQTT
     for i in range(len(data)):
-
-        dt = datetime.datetime.now(datetime.timezone.utc)
-        utc_time = dt.replace(tzinfo=datetime.timezone.utc)
-        current_cloud_t = utc_time.timestamp()
 
         d = data[["device_id", "x", "y", "z", "sr", "cloud_t"]].iloc[i]
         d["device_id"] = "mx" + d["device_id"]
