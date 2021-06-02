@@ -166,7 +166,8 @@ def get_travel_time(params):
         else:
             travel_time_fit = False
             print(
-                "  Saved travel time table does not match the parameters given in the parameter file."
+                "  Saved travel time table does not match the parameters"
+                " given in the parameter file."
             )
 
     except:
