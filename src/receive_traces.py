@@ -21,36 +21,15 @@ class DataReceiver:
     def run(self):
         """Main method that creates client and executes the rest of the script"""
 
-        if self.params["MQTT"] == "IBM":
-            # create a client
-            client = self.create_client(
-                host=os.environ["MQTT_HOST"],
-                port=int(os.environ["MQTT_PORT"]),
-                username=os.environ["MQTT_USERNAME"],
-                password=os.environ["MQTT_PASSWORD"],
-                clientid=os.environ["MQTT_CLIENTID"] + "_rec",
-            )
-
-        elif self.params["MQTT"] == "local":
-            # create a client
-            client = self.create_client(
-                host="localhost",
-                port=1883,
-                username="NA",
-                password="NA",
-                clientid="NA:" + "trace" + "_rec",
-            )
-
-        elif self.params["MQTT"] == "custom":
-            # create a client
-            client = self.create_client(
-                host=os.environ["CUS_MQTT_HOST"],
-                port=int(os.environ["CUS_MQTT_PORT"]),
-                username=os.environ["CUS_MQTT_USERNAME"],
-                password=os.environ["CUS_MQTT_PASSWORD"],
-                clientid=os.environ["CUS_MQTT_CLIENTID"] + "_rec",
-                # cafile=os.environ["CUS_MQTT_CERT"],
-            )
+        # create a client
+        client = self.create_client(
+            host=os.environ["MQTT_HOST"],
+            port=int(os.environ["MQTT_PORT"]),
+            username=os.environ["MQTT_USERNAME"],
+            password=os.environ["MQTT_PASSWORD"],
+            clientid=os.environ["MQTT_CLIENTID"] + "_rec",
+            cafile=os.environ["MQTT_CERT"],
+        )
 
         client.loop_forever()
 
@@ -61,8 +40,10 @@ class DataReceiver:
         if username and password:
             client.username_pw_set(username=username, password=password)
 
-        if cafile:
+        try:
             client.tls_set(ca_certs=cafile)
+        except:
+            print("Proceeding without certificate file")
 
         client.on_connect = self.on_connect
         client.on_message = self.on_message
@@ -89,6 +70,8 @@ class DataReceiver:
             dt = datetime.datetime.now(datetime.timezone.utc)
             utc_time = dt.replace(tzinfo=datetime.timezone.utc)
             cloud_t = utc_time.timestamp()
+
+            print(cloud_t - data["cloud_t"])
 
             self.df_holder.update(data, cloud_t)
         except BaseException as exception:

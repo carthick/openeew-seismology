@@ -2,9 +2,6 @@
 This file sets parameters used in real-time OpenEEW algorithm
 """
 
-# MQTT
-MQTT = "IBM"  # local, custom, or IBM
-
 # TRAVEL TIME GRID AND CALCULATION
 lat_width = 20  # latitude grid width
 lon_width = 20  # longitude grid width
@@ -61,7 +58,6 @@ mag9 = (1.32, 5.19, 1, 0.47)
 
 
 params = {
-    "MQTT": MQTT,
     "lat_width": lat_width,
     "lon_width": lon_width,
     "step": step,

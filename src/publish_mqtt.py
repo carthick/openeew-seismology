@@ -11,36 +11,15 @@ def run(topic, json_data, params):
     MQTT variable in params (params["MQTT"]) define whether local, or IBM MQTT is used
     """
 
-    if params["MQTT"] == "IBM":
-        # create a client
-        client = create_client(
-            host=os.environ["MQTT_HOST"],
-            port=int(os.environ["MQTT_PORT"]),
-            username=os.environ["MQTT_USERNAME"],
-            password=os.environ["MQTT_PASSWORD"],
-            clientid=os.environ["MQTT_CLIENTID"] + "_pub_res",
-        )
-
-    elif params["MQTT"] == "local":
-        # create a client
-        client = create_client(
-            host="localhost",
-            port=1883,
-            username="NA",
-            password="NA",
-            clientid=os.environ["MQTT_CLIENTID"] + "_pub_res",
-        )
-
-    elif params["MQTT"] == "custom":
-        # create a client
-        client = create_client(
-            host=os.environ["CUS_MQTT_HOST"],
-            port=int(os.environ["CUS_MQTT_PORT"]),
-            username=os.environ["CUS_MQTT_USERNAME"],
-            password=os.environ["CUS_MQTT_PASSWORD"],
-            clientid=os.environ["CUS_MQTT_CLIENTID"] + "_pub_res"
-            # cafile=os.environ["CUS_MQTT_CERT"],
-        )
+    # create a client
+    client = create_client(
+        host=os.environ["MQTT_HOST"],
+        port=int(os.environ["MQTT_PORT"]),
+        username=os.environ["MQTT_USERNAME"],
+        password=os.environ["MQTT_PASSWORD"],
+        clientid=os.environ["MQTT_CLIENTID"] + "_pub",
+        cafile=os.environ["MQTT_CERT"],
+    )
 
     topic = "iot-2/type/OpenEEW/id/region/evt/" + topic + "/fmt/json"
 
@@ -64,8 +43,10 @@ def create_client(host, port, username, password, clientid, cafile=None):
     if username and password:
         client.username_pw_set(username=username, password=password)
 
-    if cafile:
+    try:
         client.tls_set(ca_certs=cafile)
+    except:
+        print("Proceeding without certificate file")
 
     client.connect(host=host, port=port)
     return client
