@@ -7,65 +7,38 @@ from paho.mqtt.client import Client as MqttClient
 import pandas as pd
 import time
 import datetime
-
-import os, sys, inspect
-
-sys.path.insert(0, ".")
-from params import params  # pylint: disable=import-error
-
-current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
+import os
 
 
 def run(datapath):
     """Main method that creates client and executes the rest of the script"""
 
-    if params["MQTT"] == "IBM":
-        # create a client
-        client = create_client(
-            host=os.environ["MQTT_HOST"],
-            port=int(os.environ["MQTT_PORT"]),
-            username=os.environ["MQTT_USERNAME"],
-            password=os.environ["MQTT_PASSWORD"],
-            clientid=os.environ["MQTT_CLIENTID"] + "_sim",
-        )
-
-    elif params["MQTT"] == "local":
-        # create a client
-        client = create_client(
-            host="localhost",
-            port=1883,
-            username="NA",
-            password="NA",
-            clientid=os.environ["MQTT_CLIENTID"] + "_sim",
-        )
-
-    elif params["MQTT"] == "custom":
-        # create a client
-        client = create_client(
-            host=os.environ["CUS_MQTT_HOST"],
-            port=int(os.environ["CUS_MQTT_PORT"]),
-            username=os.environ["CUS_MQTT_USERNAME"],
-            password=os.environ["CUS_MQTT_PASSWORD"],
-            clientid=os.environ["CUS_MQTT_CLIENTID"] + "_sim",
-            # cafile=os.environ["CUS_MQTT_CERT"],
-        )
+    # create a client
+    client = create_client(
+        host=os.environ["MQTT_HOST"],
+        port=int(os.environ["MQTT_PORT"]),
+        username=os.environ["MQTT_USERNAME"],
+        password=os.environ["MQTT_PASSWORD"],
+        clientid=os.environ["MQTT_CLIENTID"] + "_sim",
+        cafile=os.environ["MQTT_CERT"],
+    )
 
     topic = "iot-2/type/OpenEEW/id/000000000000/evt/status/fmt/json"
 
     publish_jsonl(datapath, client, topic)
 
 
-def create_client(host, port, username, password, clientid, cafile=None):
+def create_client(host, port, username, password, clientid, cafile):
     """Creating an MQTT Client Object"""
     client = MqttClient(clientid)
 
     if username and password:
         client.username_pw_set(username=username, password=password)
 
-    if cafile:
+    try:
         client.tls_set(ca_certs=cafile)
+    except:
+        print("Proceeding without certificate file")
 
     client.connect(host=host, port=port)
     return client
@@ -94,6 +67,11 @@ def publish_jsonl(data_path, client, topic):
     # loop over all json elements in the json array and publish to MQTT
     for i in range(len(data)):
 
+        # get timestamp for the published trace
+        dt = datetime.datetime.now(datetime.timezone.utc)
+        utc_time = dt.replace(tzinfo=datetime.timezone.utc)
+        cloud_t = utc_time.timestamp()
+
         d = data[["device_id", "x", "y", "z", "sr", "cloud_t"]].iloc[i]
         d["device_id"] = "mx" + d["device_id"]
 
@@ -101,6 +79,7 @@ def publish_jsonl(data_path, client, topic):
             "traces": [{"x": d["x"], "y": d["y"], "z": d["z"]}],
             "sr": d["sr"],
             "device_id": d["device_id"],
+            "cloud_t": cloud_t,
         }
         message = json.dumps(to_publish)
 
