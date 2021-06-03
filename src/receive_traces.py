@@ -4,6 +4,7 @@ from paho.mqtt.client import Client as MqttClient
 import datetime
 import os
 
+
 class DataReceiver:
     """This class subscribes to the MQTT and receivces traces"""
 
@@ -42,7 +43,7 @@ class DataReceiver:
         try:
             client.tls_set(ca_certs=cafile)
         except:
-            print('Proceeding without certificate file')
+            print("Proceeding without certificate file")
 
         client.on_connect = self.on_connect
         client.on_message = self.on_message

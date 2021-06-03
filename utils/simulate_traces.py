@@ -9,6 +9,7 @@ import time
 import datetime
 import os
 
+
 def run(datapath):
     """Main method that creates client and executes the rest of the script"""
 
@@ -37,7 +38,7 @@ def create_client(host, port, username, password, clientid, cafile):
     try:
         client.tls_set(ca_certs=cafile)
     except:
-        print('Proceeding without certificate file')
+        print("Proceeding without certificate file")
 
     client.connect(host=host, port=port)
     return client
@@ -78,7 +79,7 @@ def publish_jsonl(data_path, client, topic):
             "traces": [{"x": d["x"], "y": d["y"], "z": d["z"]}],
             "sr": d["sr"],
             "device_id": d["device_id"],
-            "cloud_t": cloud_t
+            "cloud_t": cloud_t,
         }
         message = json.dumps(to_publish)
 

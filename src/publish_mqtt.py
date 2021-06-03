@@ -46,7 +46,7 @@ def create_client(host, port, username, password, clientid, cafile=None):
     try:
         client.tls_set(ca_certs=cafile)
     except:
-        print('Proceeding without certificate file')
+        print("Proceeding without certificate file")
 
     client.connect(host=host, port=port)
     return client
